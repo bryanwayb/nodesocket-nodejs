@@ -1,0 +1,23 @@
+{
+  "name": "nodesocket",
+  "version": "0.0.1",
+  "description": "Communication libray for the NodeSocket protocol",
+  "main": "./lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nodesocket"
+  ],
+  "contributors": [
+    {
+      "name": "Bryan Way",
+      "email": "bryanwayb@gmail.com"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bryanwayb/nodesocket-nodejs.git"
+  },
+  "license": "MIT"
+}
