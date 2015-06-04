@@ -8,9 +8,12 @@ server.on('error', function(error, client, server) {
 
 server.func('example', function(s) { // Register a function called 'example'
 	console.log('Hello, World. This is being executed on the server.\nParameter: ' + s);
-	console.log('Giving okay to stop server connections and begin shutting down.');
-	//server.close();
 	return 'This was returned from the server';
 });
+
+server.func('shutdown', function() {
+	console.log('Giving okay to stop server connections and begin shutting down.');
+	server.close();
+})
 
 server.start();
