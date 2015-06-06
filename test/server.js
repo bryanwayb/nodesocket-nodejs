@@ -6,12 +6,12 @@ server.on('error', function(error, client, server) {
 	console.log(error);
 });
 
-server.func('example', function(s) { // Register a function called 'example'
+server.defineFunction('example', function(s) { // Register a function called 'example'
 	console.log('Hello, World. This is being executed on the server.\nParameter: ' + s);
 	return 'This was returned from the server';
 });
 
-server.func('shutdown', function() {
+server.defineFunction('shutdown', function() {
 	console.log('Giving okay to stop server connections and begin shutting down.');
 	server.close();
 })

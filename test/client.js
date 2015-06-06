@@ -2,8 +2,8 @@ var nodesocket = require('../lib/index.js');
 
 var client = nodesocket().createClient(22, '127.0.0.1'); // Connect to 127.0.0.1 on port 22
 
-var example = client.func('example'); // Create a JavaScript function to call the 'example' function on the server.
-var shutdown = client.func('shutdown');
+var example = client.linkFunction('example'); // Create a JavaScript function to call the 'example' function on the server.
+var shutdown = client.linkFunction('shutdown');
 
 client.on('error', function(error, socket) {
 	console.log(error);
