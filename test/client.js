@@ -15,12 +15,12 @@ client.on('error', function(error, socket) {
 });
 
 client.on('verified', function(socket) { // Signals that we can now send functions to be executed.
-	(function loop() {
+	/*(function loop() {
 		example(function(results) {
 			console.log('Response Received: ' + results);
 			setTimeout(loop, 2000);
 		}, 'hello');
-	})();
+	})();*/
 });
 
 client.start();

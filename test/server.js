@@ -18,6 +18,7 @@ server.defineFunction('shutdown', function() {
 
 server.on('verified', function(client, server) {
 	var clientFunction = client.linkFunction('clientFunction');
+	client.requestMaster();
 	(function loop() {
 		clientFunction(function(results) {
 			console.log('Response Received From Client: ' + results);
