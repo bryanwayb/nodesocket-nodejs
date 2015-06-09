@@ -23,4 +23,8 @@ client.on('verified', function(socket) { // Signals that we can now send functio
 	})();*/
 });
 
-client.start();
+client.on('data', function(socket, buffer) {
+	console.log(buffer);
+});
+
+client.connect();

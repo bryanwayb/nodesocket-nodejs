@@ -27,4 +27,8 @@ server.on('verified', function(client, server) {
 	})();
 });
 
-server.start();
+server.on('data', function(client, server, buffer) {
+	console.log(buffer);
+});
+
+server.listen();
