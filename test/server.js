@@ -1,6 +1,9 @@
 var nodesocket = require('../lib/index.js');
 
-var server = nodesocket().createServer(22, '127.0.0.1'); // Hosts the server with the IP 127.0.0.1 on port 22
+var server = nodesocket({
+	webSocket: true,
+	webSocketVerifyHost: true
+}).createServer(8080, 'localhost'); // Hosts the server with the IP 127.0.0.1 on port 8080 with WebSocket mode enabled
 
 server.on('error', function(error, client, server) {
 	console.log(error);
@@ -11,24 +14,8 @@ server.defineFunction('example', function(s) { // Register a function called 'ex
 	return 'This was returned from the server';
 });
 
-server.defineFunction('shutdown', function() {
-	console.log('Giving okay to stop server connections and begin shutting down.');
-	server.close();
-});
-
-server.on('verified', function(client, server) {
-	var clientFunction = client.linkFunction('clientFunction');
-	client.requestMaster();
-	(function loop() {
-		clientFunction(function(results) {
-			console.log('Response Received From Client: ' + results);
-			setTimeout(loop, 2000);
-		}, 'sent from server');
-	})();
-});
-
 server.on('data', function(client, server, buffer) {
-	console.log(buffer);
+	console.log(buffer.toString('hex'));
 });
 
 server.listen();
