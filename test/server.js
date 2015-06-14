@@ -15,7 +15,7 @@ server.defineFunction('example', function(s) { // Register a function called 'ex
 });
 
 server.on('data', function(client, server, buffer) {
-	console.log(buffer.toString('hex'));
+	console.log(buffer.toString());
 });
 
 server.listen();
