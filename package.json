@@ -1,13 +1,15 @@
 {
   "name": "nodesocket",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Network protocol for shared execution spaces",
   "main": "./lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "nodesocket"
+    "nodesocket",
+    "network",
+    "protocol"
   ],
   "contributors": [
     {

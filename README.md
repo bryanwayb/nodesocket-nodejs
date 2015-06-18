@@ -1,7 +1,7 @@
 NodeSocket for NodeJS
 ==
 
-A network protocol for an execution space amongst application instances, via a slave to master relationship.
+A network protocol for an execution space amongst application instances.
 
 Server
 --
@@ -14,7 +14,7 @@ server.defineFunction('remoteFunction', function() {
 	server.close();
 });
 
-server.start();
+server.listen();
 ```
 By default, the server node is configured to be the slave, receiving function calls from the client.
 Calling `defineFunction` configures the server instance to call the passed callback when that specific command is received from a client (master).
@@ -47,23 +47,32 @@ By default the client's role is the master and the server is the slave, but thes
 As a client:
 ```JavaScript
 client.defineFunction('remoteFunction', function() {
-	console.log('Executed on the client. Closing...');
-	client.close();
+	console.log('Executed on the client.');
 });
 
 client.on('verified', function() {
-	client.requestSlave(); // Tells server to take the reigns
+	client.requestSlave(); // Tells server to make a master request
+	// Server will call client.requestMaster()
+});
+
+client.on('slave', function() {
+	console.log('Successfully switched to the slave role');
 });
 ```
 
 To handle this request on the server:
 
 ```JavaScript
-server.on('masterRequest', function(client) {
+server.on('verified', function(client) {
 	var remoteFunction = client.linkFunction('remoteFunction');
-	remoteFunction(function() {
-		console.log('Function returned. Closing...');
-		server.close();
+	
+	client.on('master', function() {
+		// Now the server node is in control of the client node
+		remoteFunction(function() {
+			console.log('Function returned. Closing...');
+			client.close();
+			server.close();
+		});
 	});
 });
 ```
@@ -72,11 +81,11 @@ It's also possible for a server to request to become the master, without the cli
 
 ```JavaScript
 server.on('verified', function(client) {
-	client.requestMaster();
-});
+	client.on('master', function() {
+		console.log('Successfully switched to the master role');
+	});
 
-server.on('masterRequest', function(client) {
-	// etc...
+	client.requestMaster();
 });
 ```
 
@@ -89,9 +98,11 @@ var client = nodesocket({
 }).createClient(8080, 'localhost');
 ```
 
+The server is not notified that it's request to become the master has been denied and will receive a "not allowed" response if a function is attempted to be called.
+
 Passing Arguments
 ==
-Passing arguments to a master function is incredibly simple, with almost no strings attached.
+Passing arguments to a master function is incredibly simple, with *almost* no strings attached.
 
 Client example:
 ```JavaScript
@@ -152,18 +163,9 @@ server.defineFunction('example', function(s, ui, d) {
 
 **Data types:**
 
->byte
-ubyte
-short
-ushort
-int
-uint
-float
-double
-string
-boolean
+>byte, ubyte, short, ushort, int, uint, float, double, string, boolean
 
-*Note:* The current version of the NodeSocket protocol **does not** support arrays. If use of arrays are required, you can use the `apply` function for serialize/deserialize to JSON.
+*Note:* The current version of the NodeSocket protocol **does not** support arrays. If use of arrays are required, you can use `apply` on the linked function, or another alternative is to serialize/deserialize to and from JSON.
 
 WebSocket Support
 ==
@@ -176,7 +178,7 @@ var server = nodesocket({
 }).createServer(8080, 'localhost');
 ```
 
-The web browser implementation for the NodeSocket protocol can be found here: https://github.com/bryanwayb/nodesocket-browserify
+The web browser implementation for the NodeSocket protocol can be found here: [https://github.com/bryanwayb/nodesocket-browserify](https://github.com/bryanwayb/nodesocket-browserify)
 
 SSL/TLS
 ==
