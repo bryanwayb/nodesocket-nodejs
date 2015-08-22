@@ -8,8 +8,10 @@ server.on('error', function(error, client, server) {
 	console.log(error);
 });
 
-server.defineFunction('serverFunction', function() {
+server.defineFunction('serverFunction', function(p1, p2) {
 	console.log('Executed on the server');
+	
+	return p1 * 5.2;
 });
 
 server.on('verified', function(client) {
