@@ -163,7 +163,7 @@ server.defineFunction('example', function(s, ui, d) {
 
 **Data types:**
 
->byte, ubyte, short, ushort, int, uint, float, double, string, boolean
+>byte, ubyte, short, ushort, int, uint, float, double, string, boolean, undefined, null
 
 *Note:* The current version of the NodeSocket protocol **does not** support arrays. If use of arrays are required, you can use `apply` on the linked function, or another alternative is to serialize/deserialize to and from JSON.
 
